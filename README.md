@@ -28,3 +28,4 @@ It's currently comprised of the following crates:
 - `credential-exchange-format`: Credential Exchange Format.
 - `credential-exchange-protocol`: Credential Exchange Protocol.
 - `credential-exchange`: Reserved crate for higher level abstractions.
+
