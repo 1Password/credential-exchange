@@ -27,6 +27,11 @@ jobs:
     name: Trigger publish
     runs-on: ubuntu-24.04
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
+        with:
+          egress-policy: audit
+
       - name: Branch check
         if: ${{ inputs.release_type != 'Dry Run' }}
         run: |
@@ -38,7 +43,7 @@ jobs:
           fi
 
       - name: Trigger deploy
-        uses: bitwarden/gh-actions/trigger-actions@main
+        uses: bitwarden/gh-actions/trigger-actions@147489de8557bb73be830f59ae1483efd90cabcf # main
         with:
           azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
