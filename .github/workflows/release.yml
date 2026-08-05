@@ -13,6 +13,9 @@ on:
           - Release
           - Dry Run
 
+permissions:
+  contents: read
+
 jobs:
   setup:
     name: Setup
@@ -22,6 +25,11 @@ jobs:
     outputs:
       release-version: ${{ steps.version.outputs.version }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
+        with:
+          egress-policy: audit
+
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -45,7 +53,7 @@ jobs:
 
       - name: Create release
         if: ${{ inputs.release_type != 'Dry Run' }}
-        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
+        uses: step-security/release-action@a0d8e0f90f554c15366ca2c9046bf4090d24adbe # v1.21.0
         env:
           PKG_VERSION: ${{ steps.version.outputs.version }}
         with:

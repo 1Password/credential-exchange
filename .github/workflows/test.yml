@@ -25,6 +25,11 @@ jobs:
           - windows-2022
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
+        with:
+          egress-policy: audit
+
       - name: Check out repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -51,7 +56,7 @@ jobs:
 
       - name: Upload to codecov.io
         if: ${{ matrix.os=='ubuntu-24.04' }}
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+        uses: step-security/codecov-action@87e66f47a0f8ab4cae465a323eb9ec63d8b6b875 # v6.0.1
 
   ci-pass:
     name: Check if tests passed
@@ -59,5 +64,10 @@ jobs:
     needs:
       - test
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
+        with:
+          egress-policy: audit
+
       - name: Check if tests passed
         run: exit 0
